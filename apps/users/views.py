@@ -11,6 +11,9 @@ from django.shortcuts import render, redirect
 class SignupView(View):
     template_name = "signup.html"
 
+    def get(self, request):
+        return render(request, self.template_name, {'form':UserCreationForm()})
+
     def post(self, request):
         if form.is_valid():
             form.save()
@@ -22,6 +25,3 @@ class SignupView(View):
             ) # Here we authenticate the user with the cleaned data
             login(request, user) #Login with the user that has authenticated
             return redirect("/")
-
-    def get(self, request):
-        return render(request, self.template_name, {'form':UserCreationForm()})
