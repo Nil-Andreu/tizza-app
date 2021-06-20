@@ -20,5 +20,5 @@ from django.urls.conf import include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('pizzas/', include('apps.pizza.urls')),
-    path('/', include('apps.users.urls'))
+    path('register/', include('apps.users.urls'))
 ]

@@ -8,14 +8,18 @@ class Pizzeria(models.Model):
     phone = models.CharField(max_length=40)
 
 class Pizza(models.Model):
-    CHOICES = ["meat", "vegetarian", "vegan"]
+    CHOICES = [
+        ('MEAT', 'Meat'),
+        ('VEGETAL', "Vegetarian"),
+        ("VEGAN", "vegan")
+    ]
 
     title = models.CharField(max_length=120)
     description = models.TextField(max_length=300)
     url = models.URLField(null = True, blank=True)
     approved = models.BooleanField(default=False)
     creator = models.ForeignKey(Pizzeria, on_delete=models.CASCADE)
-    type = models.CharField(choices = CHOICES)
+    type = models.CharField(choices = CHOICES, max_length=10)
 
 class Likes(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) # Using User model as a foreign key is more stable practice than using the User model, it is more flexible
