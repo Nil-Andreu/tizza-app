@@ -10,10 +10,13 @@ class Pizzeria(models.Model):
 class Pizza(models.Model):
     title = models.CharField(max_length=120)
     description = models.TextField(max_length=300)
-    url = models.URLField(null = True, blank=True)
     approved = models.BooleanField(default=False)
     creator = models.ForeignKey(Pizzeria, on_delete=models.CASCADE)
 
 class Likes(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) # Using User model as a foreign key is more stable practice than using the User model, it is more flexible
     pizza = models.ForeignKey(Pizza, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Likes" 
+        verbose_name_plural = "Likes"
