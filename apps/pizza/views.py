@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.views import View
 
 import json
 from django.contrib.auth.decorators import login_required
@@ -80,6 +81,16 @@ def randompage(request):
             'description':pizza.description,
         }
     )
+
+class TenPizzas(View):
+    template_name = 'ten_pizzas.html'
+
+    def get(self,request):
+        pizzas = Pizza.objects.order_by('?')[:10] # This will get 10 random pizzas as is orrdered randomly
+
+        return render(request, self.template_name, {
+            'pizzas':pizzas
+        })
 
 # Django has layers that you request and response goes through when they enter and exist your app
 # - AuthentificationMiddleware: ensures that request.user object exist and you can access it.
