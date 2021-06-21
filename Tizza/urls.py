@@ -23,6 +23,5 @@ urlpatterns = [
     re_path(r'register/$', include('apps.users.urls')), # For the login
     path("login/", auth_views.LoginView.as_view()), #The login view
     # By default django will attempt to render registration/login.html
-
     path("logout/", auth_views.LogoutView.as_view()) 
 ]

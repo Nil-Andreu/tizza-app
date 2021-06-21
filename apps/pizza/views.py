@@ -4,11 +4,24 @@ from django.http import HttpResponse
 import json
 from django.contrib.auth.decorators import login_required
 
+from ratelimit.decorators import ratelimit
+
 from .models import Pizza
 
 import random
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+# django-ratelimit will allow us to limit the number of request received over a time
+
 # The view for adding pizza to users who own a pizzeria.
+@ratelimit(key="ip", rate="100/h") # We limit the amount of request an user can make
 @login_required # The logged users will be able ot create a new pizza
 def index(request, pid):
     if request.method == 'POST':
@@ -16,7 +29,7 @@ def index(request, pid):
         new_pizza = Pizza.objects.create(
             title = data['title'],
             description = data['description'],
-            creator = request.user, #The user who requested the information
+            creator = request.user, #The user who requested the information, which is populated by AuthentificationMiddleware
         )
         new_pizza.save()
         return HttpResponse(
@@ -67,3 +80,14 @@ def randompage(request):
             'description':pizza.description,
         }
     )
+
+# Django has layers that you request and response goes through when they enter and exist your app
+# - AuthentificationMiddleware: ensures that request.user object exist and you can access it.
+# If the user is logged in then it will be populated with the user object. If not,
+# then an anonymous user will be sitting on this attribute. Oftentimes it is very convenient
+# to subclass this middleware and extend it with other user related data,
+# such as from the UserProfile
+# - SecurityMiddleware: provides various security related features, such as HTTP redirects, redirect blocking
+# and xss protection.
+# - CommonMiddleware: provides some basic functionalities tha tare chores to implement. Such
+# as sending away banned user-agents and making sure that the URL ends up with a /
