@@ -5,3 +5,5 @@ from .models import Pizzeria, Pizza, Likes
 admin.site.register(Pizzeria)
 admin.site.register(Pizza)
 admin.site.register(Likes)
+
+# If the tables are not created properly: python manage.py migrate --run-syncdb

@@ -7,6 +7,9 @@ class Pizzeria(models.Model):
     address = models.CharField(max_length=120, blank=False)
     phone = models.CharField(max_length=40)
 
+    def __str__(self):
+        return self.owner  
+
 class Pizza(models.Model):
     CHOICES = [
         ('MEAT', 'Meat'),
@@ -21,6 +24,9 @@ class Pizza(models.Model):
     creator = models.ForeignKey(Pizzeria, on_delete=models.CASCADE)
     type = models.CharField(choices = CHOICES, max_length=10)
 
+    def __str__(self):
+        return self.title        
+
 class Likes(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) # Using User model as a foreign key is more stable practice than using the User model, it is more flexible
     pizza = models.ForeignKey(Pizza, on_delete=models.CASCADE)
@@ -28,3 +34,6 @@ class Likes(models.Model):
     class Meta:
         verbose_name = "Likes" 
         verbose_name_plural = "Likes"
+    
+    def __str__(self):
+        return f'{self.user} has liked {self.pizza}'
