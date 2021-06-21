@@ -4,12 +4,12 @@ from django.http import HttpResponse
 import json
 from django.contrib.auth.decorators import login_required
 
-from ratelimit.decorators import ratelimit
-
 from .models import Pizza
+
 
 import random
 
+# A function that will get us the ip of our clients
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
@@ -21,7 +21,7 @@ def get_client_ip(request):
 # django-ratelimit will allow us to limit the number of request received over a time
 
 # The view for adding pizza to users who own a pizzeria.
-@ratelimit(key="ip", rate="100/h") # We limit the amount of request an user can make
+# @ratelimit(key="ip", rate="100/h") We limit the amount of request an user can make
 @login_required # The logged users will be able ot create a new pizza
 def index(request, pid):
     if request.method == 'POST':
