@@ -6,6 +6,9 @@ from django.contrib.auth import login, authenticate
 from django.views import View
 from django.shortcuts import render, redirect
 
+# Authentication verifiers who you rae
+# Authorization says what you can do in a systme
+
 # Create your views here.
 # Class based view
 class SignupView(View):
