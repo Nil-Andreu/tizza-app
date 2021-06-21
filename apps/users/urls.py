@@ -1,6 +1,6 @@
-from django.urls import path
+from django.urls import re_path
 from .views import SignupView
 
 urlpatterns = [
-    path('user/', SignupView.as_view()), # With as_view we can convert the class based view to a regular one
+    re_path(r'register/$', SignupView.as_view()), # With as_view we can convert the class based view to a regular one
 ]
