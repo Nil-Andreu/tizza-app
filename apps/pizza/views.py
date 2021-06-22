@@ -41,7 +41,7 @@ def index(request, pid):
             }
         )
 
-    else:
+    elif request.method == 'GET':
         pizza = Pizza.objects.get(id=pid)
         return HttpResponse(
             content = {
@@ -50,6 +50,18 @@ def index(request, pid):
                 'description': pizza.description
             }
         )
+    
+    elif request.method == 'DELETE':
+        if 'can_delete' in request.user.user_permission: # Check if has the permission to delete
+            pizza = Pizza.objects.get(id=pid)
+            pizza.delete()
+            return HttpResponse(
+                content = {
+                    'id':pizza.id,
+                }
+            )
+        else:
+            return HttpResponse(status_code = 404)
 
 
     # pizza = Pizza.objects.get(id=pid)
@@ -72,10 +84,11 @@ def index(request, pid):
 def randompage(request):
     pizzas = Pizza.objects.all()
     pid = random.randint(0, len(pizzas))
+    template_name = 'random.html'
 
     pizza = Pizza.objects.get(id=pid)
-    return HttpResponse(
-        content = {
+
+    return render(request, self.template_name, {
             'id': pizza.id,
             'title': pizza.title,
             'description':pizza.description,
