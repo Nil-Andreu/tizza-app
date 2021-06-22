@@ -81,19 +81,20 @@ def index(request, pid):
     #        }
     #    )
     
-def randompage(request):
-    pizzas = Pizza.objects.all()
-    pid = random.randint(0, len(pizzas))
+class RandomPage(View):
     template_name = 'random.html'
 
-    pizza = Pizza.objects.get(id=pid)
+    def post(self,request):
+        pizzas = Pizza.objects.all()
+        pid = random.randint(0, len(pizzas))
+        pizza = Pizza.objects.get(id=pid)
 
-    return render(request, self.template_name, {
-            'id': pizza.id,
-            'title': pizza.title,
-            'description':pizza.description,
-        }
-    )
+        return render(request, self.template_name, {
+                'id': pizza.id,
+                'title': pizza.title,
+                'description':pizza.description,
+            }
+        )
 
 class TenPizzas(View):
     template_name = 'ten_pizzas.html'
