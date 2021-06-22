@@ -81,10 +81,10 @@ def index(request, pid):
     #        }
     #    )
     
-class RandomPage(View):
+class RandomPage(View): # View class is generic, and inside we can define each method separately
     template_name = 'random.html'
 
-    def post(self,request):
+    def post(self,request): # Define the post
         pizzas = Pizza.objects.all()
         pid = random.randint(0, len(pizzas))
         pizza = Pizza.objects.get(id=pid)
